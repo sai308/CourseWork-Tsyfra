@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-bg-primary text-cream font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-bg-surface; }
+  ::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-accent; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent text-bg-primary font-semibold px-6 py-2.5 rounded-lg 
+           hover:bg-accent-light transition-all duration-200 
+           active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  .btn-ghost {
+    @apply border border-border text-cream-muted px-6 py-2.5 rounded-lg 
+           hover:border-accent hover:text-accent transition-all duration-200;
+  }
+  .card {
+    @apply bg-bg-card border border-border rounded-xl overflow-hidden 
+           transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5;
+  }
+  .input-field {
+    @apply w-full bg-bg-surface border border-border rounded-lg px-4 py-2.5 
+           text-cream placeholder-cream-faint
+           focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30
+           transition-all duration-200;
+  }
+  .badge-warning {
+    @apply inline-flex items-center gap-1 text-xs font-medium 
+           bg-status-warning/15 text-status-warning border border-status-warning/30 
+           px-2 py-0.5 rounded-full;
+  }
+  .badge-error {
+    @apply inline-flex items-center gap-1 text-xs font-medium 
+           bg-status-error/15 text-status-error border border-status-error/30 
+           px-2 py-0.5 rounded-full;
+  }
+  .pill {
+    @apply px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap 
+           border border-border text-cream-muted 
+           hover:border-accent hover:text-accent transition-all duration-200 cursor-pointer;
+  }
+  .pill-active {
+    @apply bg-accent/15 border-accent text-accent;
+  }
+}
