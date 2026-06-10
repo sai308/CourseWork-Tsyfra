@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: handmade_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-handmade_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-handmade_pass}
+      POSTGRES_DB: ${DB_NAME:-handmade_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # Optional: Expose ports only if you need to connect to the database from your host machine.
+    # ports:
+    #   - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: handmade_backend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3344}:${PORT:-3344}"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-handmade_user}:${DB_PASSWORD:-handmade_pass}@db:5432/${DB_NAME:-handmade_db}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-handmade_jwt_super_secret_key_2024_change_in_prod}
+      PORT: ${PORT:-3344}
+      RUN_SEED: ${RUN_SEED:-true}
+
+volumes:
+  pgdata:
+    driver: local
